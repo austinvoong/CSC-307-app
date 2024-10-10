@@ -7,31 +7,29 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(id, index) {
-    //const characterToRemove = characters[index];
-    console.log("Attempting to delete user with ID:", id);
-    const url = `http://localhost:8000/users/${id}`;
+    //console.log("Attempting to delete user with ID:", id); //debugging
+    const url = `http://localhost:8000/users/${id}`; 
 
-    fetch(url, { method: "DELETE" })
+    fetch(url, { method: "DELETE" }) //fetch the user to be deleted
       .then((response) => {
-        if (response.status === 204) {
+        if (response.status === 204) { //if successfully deleted, remove the character from the state
           setCharacters((prevCharacters) => 
           prevCharacters.filter((characters) => characters.id!== id)
           );
-        } else if (response.status === 404) {
+        } else if (response.status === 404) { // if user not found, log an error message
           console.error("User not found. ");
         } else {
-          console.error("Failed to delete user. ", response.status);
+          console.error("Failed to delete user. ", response.status); // if failed to delete, log an error message
         }
       })
       .catch((error) => {
-        console.log("Error: ", error);
+        console.log("Error: ", error); // if any other error, log it
       });
   }
 
   function updateList(person) {
-    //setCharacters([...characters, person]);
-    postUser(person)
-    .then((response) => {
+    postUser(person) // Post the new user to the server
+    .then((response) => { 
       if (response.status === 201) { // Check for 201 status
         return response.json(); // Parse the response to JSON
       } else {
@@ -47,7 +45,7 @@ function MyApp() {
   }
 
   function fetchUsers() {
-    const promise = fetch("http://localhost:8000/users");
+    const promise = fetch("http://localhost:8000/users"); // Fetch all users from the server
     return promise;
   }
 
@@ -63,11 +61,11 @@ function MyApp() {
     return promise;
   }
 
-  useEffect(() => {
+  useEffect(() => { // Fetch users
     fetchUsers()
-      .then((res) => res.json())
-      .then((json) => setCharacters(json["users_list"]))
-      .catch((error) => {
+      .then((res) => res.json()) // Parse the response to JSON and set the state with the fetched users list
+      .then((json) => setCharacters(json["users_list"])) //
+      .catch((error) => { // Log any errors in fetching users
         console.log(error);
       });
   }, []);

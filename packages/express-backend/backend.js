@@ -42,10 +42,10 @@ const findUserByName = (name) => {
   return users["users_list"].filter((user) => user["name"] === name); //filters users by name
 };
 
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // enables CORS for all routes
+app.use(express.json()); // parses JSON bodies
 
-app.get("/", (req, res) => {
+app.get("/", (req, res) => { // root route returns hello world message
   res.send("Hello World!");
 });
 
@@ -78,12 +78,12 @@ app.listen(port, () => {
 });
 
 const addUser = (user) => {
-  users["users_list"].push(user);
+  users["users_list"].push(user); //add user to users_list
   return user;
 };
 
 app.post("/users", (req, res) => {
-  const userToAdd = req.body;
+  const userToAdd = req.body; 
   addUser(userToAdd);
   res.status(201).send(userToAdd); //add user
 });
@@ -91,7 +91,7 @@ app.post("/users", (req, res) => {
 const deleteUser = (id) => {
     const index = users["users_list"].findIndex((user) => user["id"] === id); //find user by id and remove it
     if (index!== -1) {
-      users["users_list"].splice(index, 1);
+      users["users_list"].splice(index, 1); //remove user from users_list
       return true;
     }
     return false; //if user not found, return false

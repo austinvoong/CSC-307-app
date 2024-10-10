@@ -1,10 +1,11 @@
 // src/Table.jsx
 import React from "react";
 
-function TableHeader() {
+function TableHeader() { //Table header component
   return (
     <thead>
       <tr>
+        <th>ID</th> 
         <th>Name</th>
         <th>Job</th>
         <th>Remove</th>
@@ -13,11 +14,12 @@ function TableHeader() {
   );
 }
 
-function TableBody(props) {
+function TableBody(props) { //Table body component
   const rows = props.characterData.map((row,index) =>
   {
     return (
         <tr key={row.id}>
+            <td>{row.id}</td>
             <td>{row.name}</td>
             <td>{row.job}</td>
             <td>

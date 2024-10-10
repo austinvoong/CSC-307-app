@@ -85,16 +85,26 @@ const addUser = (user) => {
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd);
-  res.send();
+  res.status(201).send(userToAdd); //add user
 });
 
 const deleteUser = (id) => {
     const index = users["users_list"].findIndex((user) => user["id"] === id); //find user by id and remove it
     if (index!== -1) {
       users["users_list"].splice(index, 1);
+      return true;
     }
+    return false; //if user not found, return false
   };
 
 app.delete("/users/:id", (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  const userDeleted = deleteUser(id); //delete user by id
+
+  if(userDeleted) {
+    res.status(204).send(); //if user deleted, send 204 No Content
+    } else {
+    res.status(404).send("Resource not found."); //if user not found, send 404
     deleteUser(req.params["id"]);     //remove user
+    }
 });

@@ -8,15 +8,15 @@ function MyApp() {
 
   function removeOneCharacter(id, index) {
     //const characterToRemove = characters[index];
+    console.log("Attempting to delete user with ID:", id);
     const url = `http://localhost:8000/users/${id}`;
 
     fetch(url, { method: "DELETE" })
       .then((response) => {
-        if (response.statues === 204) {
-          const updated = characters.filter((_, i) => {
-            return i !== index;
-          });
-          setCharacters(updated);
+        if (response.status === 204) {
+          setCharacters((prevCharacters) => 
+          prevCharacters.filter((characters) => characters.id!== id)
+          );
         } else if (response.status === 404) {
           console.error("User not found. ");
         } else {
@@ -24,7 +24,7 @@ function MyApp() {
         }
       })
       .catch((error) => {
-        console.log("Error deleting user: ", error);
+        console.log("Error: ", error);
       });
   }
 
@@ -34,8 +34,9 @@ function MyApp() {
     .then((response) => {
       if (response.status === 201) { // Check for 201 status
         return response.json(); // Parse the response to JSON
-      }
+      } else {
       throw new Error('Failed to create user'); // Handle failure
+      }
     })
     .then((newUser) => {
       setCharacters([...characters, newUser]); // Add new user to the state
@@ -51,7 +52,7 @@ function MyApp() {
   }
 
   function postUser(person) {
-    const promise = fetch("Http://localhost:8000/users", {
+    const promise = fetch("http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

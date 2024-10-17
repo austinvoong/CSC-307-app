@@ -6,7 +6,7 @@ import Form from "./Form";
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-  function removeOneCharacter(id, index) {
+  function removeOneCharacter(id) {
     //console.log("Attempting to delete user with ID:", id); //debugging
     const url = `http://localhost:8000/users/${id}`; 
 
@@ -14,7 +14,7 @@ function MyApp() {
       .then((response) => {
         if (response.status === 204) { //if successfully deleted, remove the character from the state
           setCharacters((prevCharacters) => 
-          prevCharacters.filter((characters) => characters.id!== id)
+          prevCharacters.filter((characters) => characters._id!== id)
           );
         } else if (response.status === 404) { // if user not found, log an error message
           console.error("User not found. ");
